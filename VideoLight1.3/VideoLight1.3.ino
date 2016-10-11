@@ -184,16 +184,16 @@ void loop() {
     case ON: {
         switch (Mode) {
           case MENU:
-          if (stateChange) {//only on the first time
-            
-            screen.setBigText("",false);
-            screen.setCaption("Menu", false);
-            char *menu[] = {"VIDEO","INSANE","PORTION","HALOGEN"};
-            screen.setMenu(menu, 1, true);
-            screen.update();
-            stateChange = false;
-            
-          }
+            if (stateChange) {//only on the first time
+
+              screen.setBigText("", false);
+              screen.setCaption("Menu", false);
+              char *menu[] = {"VIDEO", "INSANE", "PORTION", "HALOGEN"};
+              screen.setMenu(menu, 1, true);
+              screen.update();
+              stateChange = false;
+
+            }
 
 
             break;
@@ -673,26 +673,26 @@ void Screen::renderChanges() {
         u8g.setFont(u8g_font_helvB08);
         u8g.setFontPosTop();
         /*
-        u8g.setPrintPos(5,0);
-        u8g.print("Hallo1");
-        u8g.setPrintPos(5,u8g.getFontAscent());
-        u8g.print("Hallo2");
+          u8g.setPrintPos(5,0);
+          u8g.print("Hallo1");
+          u8g.setPrintPos(5,u8g.getFontAscent());
+          u8g.print("Hallo2");
         */
-        char *menu1[] = {"VIDEO","INSANE","PORTION","HALOGEN","STROBE","MORSE","FLICKER","TORCH"};
-        for (int i=0; i < 10; i++) {
-          if (i = 1) {
-            u8g.drawBox(64*(i/5),(i%5)*(u8g.getFontAscent()+2),u8g.getStrWidth(menu1[i]),u8g.getFontDescent());
-            
-            
-            u8g.setColorIndex(1);
-          }else{
+        char *menu1[] = {"VIDEO", "INSANE", "PORTION", "HALOGEN", "STROBE", "MORSE", "FLICKER", "TORCH"};
+        for (int i = 0; i < 10; i++) {
+          u8g.setPrintPos(64 * (i / 5) + 1 , (i % 5) * (u8g.getFontAscent() + 2));
+
+          if (i == _menuPoint) {
+            u8g.drawBox(64 * (i / 5) - 1, (i % 5) * (u8g.getFontAscent() + 2), u8g.getStrWidth(menu1[i])+2, u8g.getFontAscent() + 2);
             u8g.setColorIndex(0);
+            u8g.print(String(menu1[i]) + String("[x]"));
+            u8g.setColorIndex(1);
+          } else {
+            u8g.print(menu1[i]);
           }
-          u8g.setPrintPos(64*(i/5),(i%5)*(u8g.getFontAscent()+2));
-          u8g.print(menu1[i]);
         }
       }
-      
+
 
     } while ( u8g.nextPage() );
     reset();
