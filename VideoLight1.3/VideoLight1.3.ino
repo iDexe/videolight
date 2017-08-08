@@ -112,6 +112,33 @@ class Voltage
     double _Volt;
 };
 
+class MenuPoint
+{
+  public:
+    MenuPoint(String cap, String big, String bot);
+    void selected();
+   private:
+    String cap;
+    String big;
+    String bot;   
+};
+enum mode {MINVALUE = 0, VIDEO = 1, INSANE = 2, PORTION = 3, HALOGEN = 4, STROBE = 5, MORSE = 6, FLICKER = 7, TORCH = 8, MAXVALUE = 9};
+class SelectMenu
+{
+  public:
+    SelectMenu(int curMenuPoint);
+    void goUp();
+    void goDown();
+    void select();
+    void setMPs(MenuPoint mps[]);
+    ~SelectMenu(){
+     delete[] menuPoints; 
+    }
+  private:
+    mode curMenuPoint;
+    MenuPoint menuPoints[];
+    friend class MenuPoint;
+};
 
 
 
@@ -135,8 +162,8 @@ void setup() {
   buttonOn.begin(true);
 
 }
-enum mode {VIDEO, INSANE, PORTION, HALOGEN, STROBE, MORSE, FLICKER, TORCH, MENU};
-mode Mode = VIDEO;
+
+mode Mode = MINVALUE;
 
 enum prog_state {STANDBY, ON};
 prog_state Prog = ON;
@@ -192,6 +219,7 @@ mode menuMode[] = {VIDEO, INSANE, PORTION, HALOGEN, STROBE, MORSE, FLICKER, TORC
 int menuPos = 0;
 
 void loop() {
+  /*
   switch (Prog) {
     case ON: {
         switch (Mode) {
@@ -507,7 +535,7 @@ void loop() {
       }
   }
 
-
+*/
 
 }
 
@@ -825,4 +853,33 @@ double Voltage::read(int interval) {
   return _Volt;
 }
 
+    
+SelectMenu::SelectMenu(mode curMenuPoint = menu.MINVALUE+1)
+  : this.curMenuPoint = curMenuPoint
+  {
+    
+  }
+
+
+void SelectMenu::goUp()
+{
+  if(++curMenuPoint == menu.MAXVALUE)
+    curMenuPoint = 0;
+    Screen::draw(curMenuItem);
+}
+
+void SelectMenu::goDown(){
+  if(--curMenuPoint == mode.MINVALUE) 
+    curMenuPoint = menu.MAXVALUE-1;
+    Screen::draw(curMenuItem);
+}
+
+void SelectMenu::select(){
+  Screen::draw(menuPoints[curMenuItem]);
+}
+
+void SelectMenu::setMPs(MenuPoint &mps[])
+{
+  menuPoints(mps);
+}
 
